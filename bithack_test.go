@@ -42,13 +42,13 @@ func TestUintConv(t *testing.T) {
 // Test for HasZero.
 
 func TestHasZero(t *testing.T) {
-	if HasZero(math.MaxUint64) != 0 {
+	if HasZero(math.MaxUint32) != 0 {
 		t.Fatal("invalid")
 	}
-	if HasZero(math.MaxUint64>>7) != 0 {
+	if HasZero(math.MaxUint32>>7) != 0 {
 		t.Fatal("invalid")
 	}
-	if HasZero(math.MaxUint64>>8) == 0 {
+	if HasZero(math.MaxUint32>>8) == 0 {
 		t.Fatal("invalid")
 	}
 }
@@ -129,7 +129,7 @@ func TestHasValue(t *testing.T) {
 	if HasValue(0, 0) == 0 {
 		t.Fatal("invalid")
 	}
-	if HasValue(math.MaxUint64, 1) != 0 {
+	if HasValue(math.MaxUint32, 1) != 0 {
 		t.Fatal("invalid")
 	}
 }
