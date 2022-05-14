@@ -1,7 +1,6 @@
 package bithack
 
 import (
-	"math"
 	"math/rand"
 	"testing"
 )
@@ -40,18 +39,6 @@ func TestUintConv(t *testing.T) {
 }
 
 // Test for HasZero.
-
-func TestHasZero(t *testing.T) {
-	if HasZero(math.MaxUint32) != 0 {
-		t.Fatal("invalid")
-	}
-	if HasZero(math.MaxUint32>>7) != 0 {
-		t.Fatal("invalid")
-	}
-	if HasZero(math.MaxUint32>>8) == 0 {
-		t.Fatal("invalid")
-	}
-}
 
 func TestHasZero32(t *testing.T) {
 	testHasZero32(t, [4]uint8{0, 0, 0, 0})
@@ -121,18 +108,6 @@ func testHasZero64(t *testing.T, check [8]uint8) {
 }
 
 // Test for HasValue.
-
-func TestHasValue(t *testing.T) {
-	if HasValue((1<<3)<<8, (1<<3)) == 0 {
-		t.Fatal("invalid")
-	}
-	if HasValue(0, 0) == 0 {
-		t.Fatal("invalid")
-	}
-	if HasValue(math.MaxUint32, 1) != 0 {
-		t.Fatal("invalid")
-	}
-}
 
 func TestHasValue32(t *testing.T) {
 	var check [4]uint8
