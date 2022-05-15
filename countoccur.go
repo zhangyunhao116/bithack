@@ -9,13 +9,6 @@ const (
 	PtrSize = 4 << (^uintptr(0) >> 63)
 )
 
-func HasZero(v uint) uint {
-	if usize == 32 {
-		return uint(HasZero32(uint32(v)))
-	}
-	return uint(HasZero64(uint64(v)))
-}
-
 func HasZero32(v uint32) uint32 {
 	return ((v) - uint32(0x0101_0101)) & ^(v) & uint32(0x8080_8080)
 }
@@ -24,17 +17,14 @@ func HasZero64(v uint64) uint64 {
 	return (((v) - uint64(0x0101_0101_0101_0101)) & ^(v) & uint64(0x8080_8080_8080_8080))
 }
 
-func HasValue(v uint, x uint8) uint {
-	if usize == 32 {
-		return uint(HasValue32(uint32(v), x))
-	}
-	return uint(HasValue64(uint64(v), x))
-}
-
 func HasValue32(v uint32, x uint8) uint32 {
 	return HasZero32(v ^ (uint32(0x0101_0101) * uint32(x)))
 }
 
+// HasValue64 determine if a uint64 has a byte(uint8) equal to x.
+// It returns a uint64 indicating all bytes in v *may* have the given value.
+//
+// This function may return a false positive, the probability is about 1 in 10,000.
 func HasValue64(v uint64, x uint8) uint64 {
 	return HasZero64(v ^ (uint64(0x0101_0101_0101_0101) * uint64(x)))
 }

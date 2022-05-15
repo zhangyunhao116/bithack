@@ -70,7 +70,6 @@ func testHasZero32(t *testing.T, check [4]uint8) {
 		if result[i] == 1 && v == 0 {
 			t.Fatalf("check: %v want: %v got: %v", check, result, got)
 		}
-		// False positive: result[i] is 0 but v is 1.
 	}
 }
 
@@ -103,7 +102,6 @@ func testHasZero64(t *testing.T, check [8]uint8) {
 		if result[i] == 1 && v == 0 {
 			t.Fatalf("check: %v want: %v got: %v", check, result, got)
 		}
-		// False positive: result[i] is 0 but v is 1.
 	}
 }
 
@@ -120,25 +118,29 @@ func TestHasValue32(t *testing.T) {
 }
 
 func testHasValue32(t *testing.T, v uint32, x uint8) {
-	var result [4]uint8
+	var want [4]uint8
 	for i, iv := range Uint32ToBytes(v) {
 		if iv == x {
-			result[i] = 1
+			want[i] = 1
 		}
 	}
 
-	got := Uint32ToBytes(HasValue32(v, x))
-	for i, iv := range got {
-		if result[i] == 1 && iv == 0 {
-			t.Fatalf("(%v,%v) want: %v got: %v", Uint32ToBytes(v), x, result, got)
+	result := Uint32ToBytes(HasValue32(v, x))
+	for i := range result {
+		if want[i] == 1 && result[i] == 0 {
+			t.Fatalf("(%v,%v) want: %v got: %v", Uint32ToBytes(v), x, want, result)
 		}
-		// False positive: result[i] is 0 but v is 1.
+		if result[i] != 0 && want[i] == 0 {
+			// False positive: result[i] is not 0 (indicates a value), but want[i] is 0 (no value).
+			// The probability is about 1 in 10,000.
+			continue
+		}
 	}
 }
 
 func TestHasValue64(t *testing.T) {
 	var check [8]uint8
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000000; i++ {
 		for j := range check {
 			check[j] = uint8(rand.Int())
 		}
@@ -147,18 +149,22 @@ func TestHasValue64(t *testing.T) {
 }
 
 func testHasValue64(t *testing.T, v uint64, x uint8) {
-	var result [8]uint8
+	var want [8]uint8
 	for i, iv := range Uint64ToBytes(v) {
 		if iv == x {
-			result[i] = 1
+			want[i] = 1
 		}
 	}
 
-	got := Uint64ToBytes(HasValue64(v, x))
-	for i, iv := range got {
-		if result[i] == 1 && iv == 0 {
-			t.Fatalf("(%v,%v) want: %v got: %v", Uint64ToBytes(v), x, result, got)
+	result := Uint64ToBytes(HasValue64(v, x))
+	for i := range result {
+		if want[i] == 1 && result[i] == 0 {
+			t.Fatalf("(%v,%v) want: %v got: %v", Uint64ToBytes(v), x, want, result)
 		}
-		// False positive: result[i] is 0 but v is 1.
+		if result[i] != 0 && want[i] == 0 {
+			// False positive: result[i] is not 0 (indicates a value), but want[i] is 0 (no value).
+			// The probability is about 1 in 10,000.
+			continue
+		}
 	}
 }
