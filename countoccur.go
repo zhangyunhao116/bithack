@@ -4,9 +4,9 @@ const (
 	// 32 on 32-bit systems, 64 on 64-bit
 	usize = 32 << (^uintptr(0) >> 63)
 
-	// PtrSize is the size of a pointer in bytes - unsafe.Sizeof(uintptr(0)) but as an ideal constant.
+	// ptrSize is the size of a pointer in bytes - unsafe.Sizeof(uintptr(0)) but as an ideal constant.
 	// It is also the size of the machine's native word size (that is, 4 on 32-bit systems, 8 on 64-bit).
-	PtrSize = 4 << (^uintptr(0) >> 63)
+	ptrSize = 4 << (^uintptr(0) >> 63)
 )
 
 func HasZero32(v uint32) uint32 {

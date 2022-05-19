@@ -121,13 +121,13 @@ func testHasValue32(t *testing.T, v uint32, x uint8) {
 	var want [4]uint8
 	for i, iv := range Uint32ToBytes(v) {
 		if iv == x {
-			want[i] = 1
+			want[i] = 128
 		}
 	}
 
 	result := Uint32ToBytes(HasValue32(v, x))
 	for i := range result {
-		if want[i] == 1 && result[i] == 0 {
+		if want[i] == 128 && result[i] != 128 {
 			t.Fatalf("(%v,%v) want: %v got: %v", Uint32ToBytes(v), x, want, result)
 		}
 		if result[i] != 0 && want[i] == 0 {
@@ -140,7 +140,7 @@ func testHasValue32(t *testing.T, v uint32, x uint8) {
 
 func TestHasValue64(t *testing.T) {
 	var check [8]uint8
-	for i := 0; i < 10000000; i++ {
+	for i := 0; i < 1000; i++ {
 		for j := range check {
 			check[j] = uint8(rand.Int())
 		}
@@ -152,13 +152,13 @@ func testHasValue64(t *testing.T, v uint64, x uint8) {
 	var want [8]uint8
 	for i, iv := range Uint64ToBytes(v) {
 		if iv == x {
-			want[i] = 1
+			want[i] = 128
 		}
 	}
 
 	result := Uint64ToBytes(HasValue64(v, x))
 	for i := range result {
-		if want[i] == 1 && result[i] == 0 {
+		if want[i] == 128 && result[i] != 128 {
 			t.Fatalf("(%v,%v) want: %v got: %v", Uint64ToBytes(v), x, want, result)
 		}
 		if result[i] != 0 && want[i] == 0 {
